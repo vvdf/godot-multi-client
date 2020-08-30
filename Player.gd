@@ -11,16 +11,24 @@ func _ready():
 
 func player_input():
 	var movement = Vector3(0, 0, 0)
+	var movement_attempted = false
 	if Input.is_action_pressed("ui_left"):
 		movement.x -= MOVE_SPEED
+		movement_attempted = true
 	if Input.is_action_pressed("ui_right"):
 		movement.x += MOVE_SPEED
+		movement_attempted = true
 	if Input.is_action_pressed("ui_up"):
 		movement.z -= MOVE_SPEED
+		movement_attempted = true
 	if Input.is_action_pressed("ui_down"):
 		movement.z += MOVE_SPEED
+		movement_attempted = true
 	
-	get_parent().update(movement, player_id)
+	# only send movements when movements are attempted
+	# so as not to flood the network with 0s
+	if movement_attempted:
+		get_parent().update(movement, player_id)
 #	rpc_unreliable("update_pos_server", movement, player_id)
 	
 #remote func update_pos_client(new_pos, player_id):

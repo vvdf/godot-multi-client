@@ -45,22 +45,30 @@ remote func register_player_client(id, name):
 
 func spawn_player(id):
 	print("Attempt Spawn Player for ID# ", id)
-	var player_scene = load("res://Player.tscn")
-	var player = player_scene.instance()
-	
-	player.set_name(str(id))
-	
-	# Adding player scene instance to client's main scene tree
-	add_child(player) 
-	
 	if id == get_tree().get_network_unique_id():
+		var player_scene = load("res://PlayerMain.tscn")
+		var player = player_scene.instance()
+		player.set_name(str(id))
+
+		# Adding player scene instance to client's main scene tree
+		add_child(player) 
+		
 		player.set_network_master(id)
 		player.player_id = id
 		player.control = true
+	else:
+		var player_scene = load("res://Player.tscn")
+		var player = player_scene.instance()
+	
+		player.set_name(str(id))
+	
+		# Adding player scene instance to client's main scene tree
+		add_child(player) 
 
 func update(movement, id):
 	rpc_unreliable_id(1, "update_pos_server", movement, id)
 	
+# probably want to validate this so that it can only accept calls by the server
 remote func update_pos_client(new_pos, player_id):
 	if players.has(player_id):
 		var player_node = get_node(str(player_id))

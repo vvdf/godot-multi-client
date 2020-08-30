@@ -5,7 +5,7 @@
 [sub_resource type="CapsuleMesh" id=1]
 
 [sub_resource type="SpatialMaterial" id=2]
-albedo_color = Color( 0.466667, 0.25098, 0.890196, 1 )
+albedo_color = Color( 0.25098, 0.890196, 0.411765, 1 )
 
 [sub_resource type="PrismMesh" id=3]
 
@@ -47,3 +47,7 @@ material/0 = SubResource( 6 )
 [node name="CollisionShape" type="CollisionShape" parent="KinematicBody"]
 transform = Transform( 1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0 )
 shape = SubResource( 7 )
+
+[node name="Camera" type="Camera" parent="KinematicBody"]
+transform = Transform( -1, 0, -8.74228e-08, -2.26267e-08, 0.965926, 0.258819, 8.44439e-08, 0.258819, -0.965926, 0, 1.87686, -6.13104 )
+fov = 85.0166
