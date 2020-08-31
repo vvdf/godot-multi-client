@@ -1,6 +1,6 @@
 extends KinematicBody
 
-var update_movement_max_disparity = 1
+const MAX_POS_DISPARITY = 1
 var player_id = 0
 var player_angle = 0
 var mouse_sensitivity = 0.3
@@ -52,13 +52,13 @@ func player_command():
 		get_parent().update_server(get_translation(), player_angle, player_id)
 		
 # Function for client to run to determine if we need to update current position
-# to catch up/be accurate with server
+# to catch up/be accurate with server, aka fix position
 func check_for_client_move(new_pos):
 	var curr_pos = get_translation()
 	get_parent().debug_pos(curr_pos, new_pos)
-	if (abs(curr_pos.x - new_pos.x) > update_movement_max_disparity
-		|| abs(curr_pos.z - new_pos.z) > update_movement_max_disparity
-		|| abs(curr_pos.y - new_pos.y) > update_movement_max_disparity):
+	if (abs(curr_pos.x - new_pos.x) > MAX_POS_DISPARITY
+		|| abs(curr_pos.z - new_pos.z) > MAX_POS_DISPARITY
+		|| abs(curr_pos.y - new_pos.y) > MAX_POS_DISPARITY):
 		set_translation(new_pos)
 		
 func update_facing(new_angle):
