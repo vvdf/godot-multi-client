@@ -2,7 +2,6 @@ extends KinematicBody
 
 var update_movement_max_disparity = 1
 var player_id = 0
-var facing = 0
 var mouse_sensitivity = 0.3
 var min_pitch = -90
 var max_pitch = 90
@@ -11,6 +10,7 @@ var speed = 25
 
 onready var camera_pivot = $CameraPivot
 onready var camera = $CameraPivot/CameraBoom/Camera
+onready var model = $PlayerModel
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -18,24 +18,32 @@ func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
 func player_command():
-	var movement = Vector3(0, 0, 0)
+	var direction = Vector3(0, 0, 0)
 	var movement_attempted = false
 	
 	# Server Relative Inputs
-	if Input.is_action_pressed("ui_left"):
-		movement.x -= 1
+	if Input.is_action_pressed("move_forward"):
+		direction -= camera_pivot.get_transform().basis.z
+		model.rotation_degrees.y = camera_pivot.rotation_degrees.y
 		movement_attempted = true
-	if Input.is_action_pressed("ui_right"):
-		movement.x += 1
+	if Input.is_action_pressed("move_backward"):
+		direction += camera_pivot.get_transform().basis.z
+		model.rotation_degrees.y = camera_pivot.rotation_degrees.y + 180
 		movement_attempted = true
-	if Input.is_action_pressed("ui_up"):
-		movement.z -= 1
+	if Input.is_action_pressed("move_left"):
+		direction -= camera_pivot.get_transform().basis.x
+		model.rotation_degrees.y = camera_pivot.rotation_degrees.y + 90
 		movement_attempted = true
-	if Input.is_action_pressed("ui_down"):
-		movement.z += 1
+	if Input.is_action_pressed("move_right"):
+		direction += camera_pivot.get_transform().basis.x
+		model.rotation_degrees.y = camera_pivot.rotation_degrees.y - 90
 		movement_attempted = true
+	if Input.is_action_pressed("ui_home"):
+		print("Camera Facing: ", camera_pivot.rotation_degrees.y)
 	
-	move_and_slide(movement.normalized() * speed)
+	direction.y = 0 # prevent flying from use of get_transform().basis catching y vector
+	
+	move_and_slide(direction.normalized() * speed)
 
 	# only send attempted updated position when movements are attempted
 	# so as not to flood the network with 0s
@@ -57,11 +65,12 @@ func _process(delta):
 	player_command()
 
 func _input(event):
-	# Client Relative Inputs
+	# Client Specific Inputs
 	if Input.is_action_just_pressed("ui_cancel"):
 		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 		
 	if event is InputEventMouseMotion:
-		rotation_degrees.y -= event.relative.x * mouse_sensitivity
+		camera_pivot.rotation_degrees.y -= event.relative.x * mouse_sensitivity
+		camera_pivot.rotation_degrees.y = fmod(camera_pivot.rotation_degrees.y, 360) # prevent value climb
 		camera_pivot.rotation_degrees.x -= event.relative.y * mouse_sensitivity
 		camera_pivot.rotation_degrees.x = clamp(camera_pivot.rotation_degrees.x, min_pitch, max_pitch)
