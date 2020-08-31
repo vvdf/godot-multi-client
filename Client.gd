@@ -68,11 +68,11 @@ func spawn_player(id):
 		# Adding player scene instance to client's main scene tree
 		add_child(player) 
 
-func update_server(new_pos, id):
-	rpc_unreliable_id(1, "update_pos_server", new_pos, id)
+func update_server(new_pos, new_facing, id):
+	rpc_unreliable_id(1, "update_pos_server", new_pos, new_facing, id)
 	
 # probably want to validate this so that it can only accept calls by the server
-remote func update_pos_client(new_pos, player_id):
+remote func update_pos_client(new_pos, new_facing, player_id):
 	if players.has(player_id):
 		var player_node = get_node(str(player_id))
 		
@@ -80,6 +80,7 @@ remote func update_pos_client(new_pos, player_id):
 			player_node.check_for_client_move(new_pos)
 		else:
 			player_node.set_translation(new_pos)
+			player_node.rotation_degrees.y = new_facing
 
 func debug_pos(client_pos, server_pos):
 	debug_client_pos.set_text(String(client_pos))

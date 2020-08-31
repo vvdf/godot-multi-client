@@ -2,6 +2,7 @@ extends KinematicBody
 
 var update_movement_max_disparity = 1
 var player_id = 0
+var player_angle = 0
 var mouse_sensitivity = 0.3
 var min_pitch = -90
 var max_pitch = 90
@@ -24,19 +25,19 @@ func player_command():
 	# Server Relative Inputs
 	if Input.is_action_pressed("move_forward"):
 		direction -= camera_pivot.get_transform().basis.z
-		model.rotation_degrees.y = camera_pivot.rotation_degrees.y
+		update_facing(camera_pivot.rotation_degrees.y)
 		movement_attempted = true
 	if Input.is_action_pressed("move_backward"):
 		direction += camera_pivot.get_transform().basis.z
-		model.rotation_degrees.y = camera_pivot.rotation_degrees.y + 180
+		update_facing(camera_pivot.rotation_degrees.y + 180)
 		movement_attempted = true
 	if Input.is_action_pressed("move_left"):
 		direction -= camera_pivot.get_transform().basis.x
-		model.rotation_degrees.y = camera_pivot.rotation_degrees.y + 90
+		update_facing(camera_pivot.rotation_degrees.y + 90)
 		movement_attempted = true
 	if Input.is_action_pressed("move_right"):
 		direction += camera_pivot.get_transform().basis.x
-		model.rotation_degrees.y = camera_pivot.rotation_degrees.y - 90
+		update_facing(camera_pivot.rotation_degrees.y - 90)
 		movement_attempted = true
 	if Input.is_action_pressed("ui_home"):
 		print("Camera Facing: ", camera_pivot.rotation_degrees.y)
@@ -48,7 +49,7 @@ func player_command():
 	# only send attempted updated position when movements are attempted
 	# so as not to flood the network with 0s
 	if movement_attempted:
-		get_parent().update_server(get_translation(), player_id)
+		get_parent().update_server(get_translation(), player_angle, player_id)
 		
 # Function for client to run to determine if we need to update current position
 # to catch up/be accurate with server
@@ -59,6 +60,10 @@ func check_for_client_move(new_pos):
 		|| abs(curr_pos.z - new_pos.z) > update_movement_max_disparity
 		|| abs(curr_pos.y - new_pos.y) > update_movement_max_disparity):
 		set_translation(new_pos)
+		
+func update_facing(new_angle):
+	model.rotation_degrees.y = new_angle
+	player_angle = new_angle
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
