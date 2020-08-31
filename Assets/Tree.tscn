@@ -1,0 +1,78 @@
+[gd_scene load_steps=7 format=2]
+
+[sub_resource type="CylinderShape" id=1]
+
+[sub_resource type="CylinderShape" id=6]
+
+[sub_resource type="PrismMesh" id=2]
+
+[sub_resource type="SpatialMaterial" id=3]
+albedo_color = Color( 0.0156863, 1, 0.121569, 1 )
+
+[sub_resource type="CylinderMesh" id=4]
+
+[sub_resource type="SpatialMaterial" id=5]
+albedo_color = Color( 0.67451, 0.431373, 0.168627, 1 )
+
+[node name="Tree" type="Spatial"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.687239, 0 )
+
+[node name="StaticBody" type="StaticBody" parent="."]
+
+[node name="CollisionShape" type="CollisionShape" parent="StaticBody"]
+transform = Transform( 0.209099, 0, 0, 0, 1, 0, 0, 0, 0.209099, 0.00119761, 0.278319, -0.0150404 )
+shape = SubResource( 1 )
+
+[node name="CollisionShape2" type="CollisionShape" parent="StaticBody"]
+transform = Transform( 1.8, 0, 0, 0, 1.8, 0, 0, 0, 1.8, 0, 3, 0 )
+shape = SubResource( 6 )
+
+[node name="MeshInstance" type="MeshInstance" parent="StaticBody"]
+transform = Transform( 2.35699, 0, 0, 0, 1.85095, 0, 0, 0, 0.0575682, 0, 3.09005, 0 )
+mesh = SubResource( 2 )
+material/0 = SubResource( 3 )
+
+[node name="MeshInstance2" type="MeshInstance" parent="StaticBody/MeshInstance"]
+transform = Transform( 1.15032, 0, 0, 0, 0.582955, 0, 0, 0, 1, 0, 0, 0 )
+mesh = SubResource( 2 )
+material/0 = SubResource( 3 )
+
+[node name="MeshInstance3" type="MeshInstance" parent="StaticBody/MeshInstance"]
+transform = Transform( 0.65346, 0, 0, 0, 0.27348, 0, 0, 0, 1, 0, 0.393005, 0 )
+mesh = SubResource( 2 )
+material/0 = SubResource( 3 )
+
+[node name="MeshInstance2" type="MeshInstance" parent="StaticBody"]
+transform = Transform( 1.17849, 0, 0.0498556, 0, 1.85095, 0, -2.04121, 0, 0.0287841, 0, 3.09005, 0 )
+mesh = SubResource( 2 )
+material/0 = SubResource( 3 )
+
+[node name="MeshInstance2" type="MeshInstance" parent="StaticBody/MeshInstance2"]
+transform = Transform( 1.15032, 0, 0, 0, 0.582955, 0, 0, 0, 1, 0, 0, 0 )
+mesh = SubResource( 2 )
+material/0 = SubResource( 3 )
+
+[node name="MeshInstance3" type="MeshInstance" parent="StaticBody/MeshInstance2"]
+transform = Transform( 0.65346, 0, 0, 0, 0.27348, 0, 0, 0, 1, 0, 0.393005, 0 )
+mesh = SubResource( 2 )
+material/0 = SubResource( 3 )
+
+[node name="MeshInstance3" type="MeshInstance" parent="StaticBody"]
+transform = Transform( -1.1785, 0, 0.0498556, 0, 1.85095, 0, -2.04121, 0, -0.0287841, 0, 3.09005, 0 )
+mesh = SubResource( 2 )
+material/0 = SubResource( 3 )
+
+[node name="MeshInstance2" type="MeshInstance" parent="StaticBody/MeshInstance3"]
+transform = Transform( 1.15032, 0, 0, 0, 0.582955, 0, 0, 0, 1, 0, 0, 0 )
+mesh = SubResource( 2 )
+material/0 = SubResource( 3 )
+
+[node name="MeshInstance3" type="MeshInstance" parent="StaticBody/MeshInstance3"]
+transform = Transform( 0.65346, 0, 0, 0, 0.27348, 0, 0, 0, 1, 0, 0.393005, 0 )
+mesh = SubResource( 2 )
+material/0 = SubResource( 3 )
+
+[node name="MeshInstance4" type="MeshInstance" parent="StaticBody"]
+transform = Transform( 0.209099, 0, 0, 0, 1, 0, 0, 0, 0.209099, 0.00119761, 0.278319, -0.0150404 )
+mesh = SubResource( 4 )
+material/0 = SubResource( 5 )

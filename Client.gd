@@ -4,6 +4,9 @@ const DEFAULT_ADDR = "192.168.1.56" # target IP Address
 const DEFAULT_PORT = 3000 # target port
 var players = {}
 var player_name =  "Client"
+var owner_id = 0
+onready var debug_client_pos = $DebugUI/ClientPos
+onready var debug_server_pos = $DebugUI/ServerPos
 
 func _ready():
 	get_tree().connect("network_peer_connected", self, "_player_connected")
@@ -13,7 +16,6 @@ func _ready():
 	get_tree().connect("server_disconnected", self, "_server_disconnected")
 	
 	join_server()
-	
 	
 func join_server():
 	print("Attempting to join server")
@@ -55,7 +57,7 @@ func spawn_player(id):
 		
 		player.set_network_master(id)
 		player.player_id = id
-		player.control = true
+		owner_id = id
 	else:
 		var player_scene = load("res://Player.tscn")
 		var player = player_scene.instance()
@@ -65,14 +67,22 @@ func spawn_player(id):
 		# Adding player scene instance to client's main scene tree
 		add_child(player) 
 
-func update(movement, id):
-	rpc_unreliable_id(1, "update_pos_server", movement, id)
+func update_server(new_pos, id):
+	rpc_unreliable_id(1, "update_pos_server", new_pos, id)
 	
 # probably want to validate this so that it can only accept calls by the server
 remote func update_pos_client(new_pos, player_id):
 	if players.has(player_id):
 		var player_node = get_node(str(player_id))
-		player_node.set_translation(new_pos)
+		
+		if player_id == owner_id:
+			player_node.check_for_client_move(new_pos)
+		else:
+			player_node.set_translation(new_pos)
+
+func debug_pos(client_pos, server_pos):
+	debug_client_pos.set_text(String(client_pos))
+	debug_server_pos.set_text(String(server_pos))
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
