@@ -5,6 +5,7 @@ const DEFAULT_PORT = 3000 # target port
 var players = {}
 var player_name =  "Client"
 var owner_id = 0
+onready var ui_player_count = $UI/PlayerCount
 onready var debug_client_pos = $DebugUI/ClientPos
 onready var debug_server_pos = $DebugUI/ServerPos
 
@@ -85,5 +86,5 @@ func debug_pos(client_pos, server_pos):
 	debug_server_pos.set_text(String(server_pos))
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	rpc("print_something")
+func _process(delta):
+	ui_player_count.set_text(String(players.size()))

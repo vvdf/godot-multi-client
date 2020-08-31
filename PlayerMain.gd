@@ -50,8 +50,7 @@ func check_for_client_move(new_pos):
 	if (abs(curr_pos.x - new_pos.x) > update_movement_max_disparity
 		|| abs(curr_pos.z - new_pos.z) > update_movement_max_disparity
 		|| abs(curr_pos.y - new_pos.y) > update_movement_max_disparity):
-		print("Forcibly updating position - CURR: ", curr_pos, " != NEW: ", new_pos)
-#		set_translation(new_pos)
+		set_translation(new_pos)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):

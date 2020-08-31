@@ -39,6 +39,36 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.68888, 0.687239, 12.03 )
 [node name="Tree5" parent="." instance=ExtResource( 2 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.42218, 0.687239, -12.4694 )
 
+[node name="UI" type="Node2D" parent="."]
+
+[node name="Panel" type="Panel" parent="UI"]
+margin_left = 913.0
+margin_top = 12.0
+margin_right = 1014.0
+margin_bottom = 34.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PlayerCount" type="Label" parent="UI"]
+margin_left = 974.0
+margin_top = 16.0
+margin_right = 1011.0
+margin_bottom = 30.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="PlayerText" type="Label" parent="UI"]
+margin_left = 920.955
+margin_top = 16.4994
+margin_right = 964.955
+margin_bottom = 30.4994
+text = "Players:"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
 [node name="DebugUI" type="Node2D" parent="."]
 
 [node name="Panel" type="Panel" parent="DebugUI"]
